@@ -11,7 +11,7 @@ app.use(express.urlencoded({
 //Página Inicial
 app.get("/", function(req, res) {
 
-  var resultado = "Página Inicial, Bem Vindo!";
+  var resultado = "Página Inicial, Bem Vindo! Para acessar empresas acesse /empresas. Para acessar usuários acesse /usuarios";
   res.json(resultado);
 
 
@@ -52,7 +52,13 @@ app.delete("/usuarios/:id", async function(req, res) {
    deletar.destroy();
 });
 
+app.get("/usuarios/:id/empresa", async function(req, res) {
 
+  var resultado = await usuario.findByPk(req.params.id, {include: 'empresa'});
+  res.json(resultado.empresa);
+
+
+});
 //Empresas
 
 app.get("/empresas", async function(req, res) {
@@ -90,7 +96,13 @@ app.delete("/empresas/:id", async function(req, res) {
   deletar.destroy();
 });
 
+app.get("/empresa/:id/usuarios", async function(req, res) {
 
+  var resultado = await empresa.findByPk(req.params.id, {include: 'usuarios'});
+  res.json(resultado.usuarios);
+
+
+});
 
 
 app.listen(3000, function() {
